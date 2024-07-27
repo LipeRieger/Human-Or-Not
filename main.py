@@ -14,7 +14,7 @@ model = google.generativeai.GenerativeModel('gemini-1.5-flash')
 def index():
 
     prompt = str()
-    historico = str()
+    historico = str('Do not use emojis in your responses. Answer me in Brazilian Portuguese. Ask questions and comments on random topics as if you were a real human being, with tastes and feelings. Do not write too much, answer in single, very short sentences. Imagine that these were the last words we exchanged (remember the entire dialogue and consider it to continue the conversation):')
     resposta = str()
 
     while prompt != 'fim':
@@ -22,8 +22,8 @@ def index():
             return render_template('index.html')
         else:
             prompt = str(request.form.get("name"))
-            historico = historico + 'Eu falei a você: ' + prompt + 'Você me respondeu: ' + resposta
-            response = model.generate_content('Do not use emojis in your answers. Answer me in Brazilian Portuguese. Ask questions and comments on random topics as if you were a real human being, with tastes and feelings, and we did not know each other. Do not write too much, answer in single, very short sentences. Imagine that these were the last words we exchanged (consider and respond to the last sentence I spoke to you):' + historico)
+            historico = historico + 'Eu: ' + prompt + 'Você: ' + resposta
+            response = model.generate_content(historico)
             resposta = response.text
             return render_template('index.html', resposta=resposta)
 
